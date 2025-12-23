@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="./public/image.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>3D Models from PUBG</title>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Footer CSS -->
+    <style>
+      /* PUBG Footer Styles */
+      .pubg-footer {
+        background: linear-gradient(180deg, #0c0c14 0%, #05050a 100%);
+        color: #fff;
+        border-top: 3px solid #ff4655;
+        font-family: 'Segoe UI', system-ui, sans-serif;
+        margin-top: auto;
+      }
+
+      /* Top Section */
+      .footer-top {
+        padding: 50px 0;
+        background: rgba(15, 15, 20, 0.8);
+      }
+
+      .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 1fr 1.5fr 1fr 1fr;
+        gap: 40px;
+      }
+
+      @media (max-width: 1200px) {
+        .footer-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .footer-container {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Brand Section */
+      .footer-brand {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .brand-logo {
+        font-size: 2.5rem;
+        font-weight: 900;
+        line-height: 1;
+      }
+
+      .logo-text {
+        color: #fff;
+      }
+
+      .logo-highlight {
+        color: #ff4655;
+        text-shadow: 0 0 10px rgba(255, 70, 85, 0.5);
+      }
+
+      .logo-sub {
+        display: block;
+        font-size: 1rem;
+        color: #888;
+        font-weight: 400;
+        letter-spacing: 3px;
+        margin-top: 5px;
+      }
+
+      .brand-tagline {
+        color: #aaa;
+        font-size: 0.9rem;
+        line-height: 1.5;
+      }
+
+      .platform-badges {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .badge {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 6px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.8rem;
+        color: #ccc;
+        transition: all 0.3s ease;
+      }
+
+      .badge:hover {
+        background: rgba(255, 70, 85, 0.1);
+        border-color: #ff4655;
+      }
+
+      .badge i {
+        color: #ff4655;
+      }
+
+      /* Columns */
+      .footer-column {
+        display: flex;
+        flex-direction: column;
+        gap: 25px;
+      }
+
+      .column-title {
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ff4655;
+      }
+
+      .column-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      @media (max-width: 768px) {
+        .column-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .category h5 {
+        color: #ff4655;
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .category a {
+        display: block;
+        color: #bbb;
+        text-decoration: none;
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+        padding-left: 5px;
+      }
+
+      .category a:hover {
+        color: #fff;
+        padding-left: 10px;
+        background: rgba(255, 70, 85, 0.1);
+      }
+
+      .resources-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .resources-list a {
+        color: #bbb;
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: color 0.3s ease;
+      }
+
+      .resources-list a:hover {
+        color: #ff4655;
+      }
+
+      .resources-list i {
+        width: 20px;
+        color: #ff4655;
+      }
+
+      .format-info {
+        margin-top: 20px;
+      }
+
+      .format-info h5 {
+        color: #aaa;
+        font-size: 0.9rem;
+        margin-bottom: 10px;
+      }
+
+      .formats {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .format-tag {
+        background: rgba(255, 70, 85, 0.15);
+        color: #ff9999;
+        padding: 4px 10px;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        font-family: monospace;
+      }
+
+      /* Social Platforms */
+      .social-platforms {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .social-btn {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        color: white;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+      }
+
+      .social-btn.discord {
+        background: linear-gradient(135deg, #5865F2, #4752c4);
+      }
+
+      .social-btn.sketchfab {
+        background: linear-gradient(135deg, #1CAAD9, #0e8db8);
+      }
+
+      .social-btn.github {
+        background: linear-gradient(135deg, #333, #222);
+      }
+
+      .social-btn.patreon {
+        background: linear-gradient(135deg, #FF424D, #e63946);
+      }
+
+      .social-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Subscription Form */
+      .update-subscription h5 {
+        color: #aaa;
+        font-size: 0.9rem;
+        margin-bottom: 15px;
+      }
+
+      .subscribe-form {
+        display: flex;
+        gap: 5px;
+      }
+
+      .subscribe-form input {
+        flex: 1;
+        padding: 12px 15px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 6px;
+        color: white;
+        font-size: 0.9rem;
+      }
+
+      .subscribe-form input::placeholder {
+        color: #888;
+      }
+
+      .subscribe-form button {
+        background: #ff4655;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        width: 50px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .subscribe-form button:hover {
+        background: #e03e4c;
+      }
+
+      /* Legal Section */
+      .footer-legal {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 30px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .legal-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .legal-horizontal {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1.5fr;
+        gap: 40px;
+        align-items: center;
+      }
+
+      @media (max-width: 992px) {
+        .legal-horizontal {
+          grid-template-columns: 1fr;
+          gap: 30px;
+        }
+      }
+
+      .legal-partner, .platform-acknowledgment {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .partner-label, .ack-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #aaa;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .partner-logos, .platform-logos {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .partner-logo, .platform-logo {
+        padding: 10px 15px;
+        border-radius: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 100px;
+      }
+
+      .partner-logo.krafton {
+        background: linear-gradient(135deg, rgba(255, 70, 85, 0.2), rgba(255, 70, 85, 0.1));
+        border: 1px solid rgba(255, 70, 85, 0.3);
+      }
+
+      .partner-logo.tencent {
+        background: linear-gradient(135deg, rgba(0, 122, 255, 0.2), rgba(0, 122, 255, 0.1));
+        border: 1px solid rgba(0, 122, 255, 0.3);
+      }
+
+      .partner-name {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: #fff;
+      }
+
+      .partner-desc {
+        font-size: 0.75rem;
+        color: #aaa;
+        margin-top: 3px;
+      }
+
+      .platform-logo {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 10px;
+      }
+
+      .platform-logo i {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+      }
+
+      .platform-logo.sketchfab i {
+        color: #1CAAD9;
+      }
+
+      .platform-logo.github i {
+        color: #fff;
+      }
+
+      .platform-logo.blender i {
+        color: #EA7600;
+      }
+
+      .legal-links-horizontal {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 25px;
+        justify-content: center;
+      }
+
+      .legal-links-horizontal a {
+        color: #bbb;
+        text-decoration: none;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: color 0.3s ease;
+      }
+
+      .legal-links-horizontal a:hover {
+        color: #ff4655;
+      }
+
+      /* Bottom Section */
+      .footer-bottom {
+        padding: 30px 0;
+      }
+
+      .bottom-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 40px;
+        align-items: start;
+      }
+
+      @media (max-width: 768px) {
+        .bottom-container {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+      }
+
+      .copyright-section {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .copyright-text {
+        color: #aaa;
+        font-size: 0.85rem;
+        line-height: 1.6;
+      }
+
+      .disclaimer {
+        color: #888;
+        font-size: 0.8rem;
+        line-height: 1.5;
+        border-left: 3px solid #ff4655;
+        padding-left: 15px;
+      }
+
+      .info-section {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .info-badges {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .info-badge {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 12px;
+        background: rgba(255, 70, 85, 0.1);
+        border-radius: 6px;
+        font-size: 0.8rem;
+        color: #ff9999;
+      }
+
+      .info-badge i {
+        color: #ff4655;
+      }
+
+      .contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .contact-info a {
+        color: #bbb;
+        text-decoration: none;
+        font-size: 0.85rem;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: color 0.3s ease;
+      }
+
+      @media (max-width: 768px) {
+        .contact-info a {
+          justify-content: center;
+        }
+      }
+
+      .contact-info a:hover {
+        color: #ff4655;
+      }
+
+      .report-link {
+        color: #ff9999 !important;
+      }
+
+      .report-link:hover {
+        color: #ff4655 !important;
+      }
+
+      /* Body styling for proper footer placement */
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      #root {
+        flex: 1;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    
+    <!-- Footer -->
+    <footer class="pubg-footer">
+      <!-- Top Section: Brand & Navigation -->
+      <div class="footer-top">
+        <div class="footer-container">
+          
+          <!-- Brand Column -->
+          <div class="footer-brand">
+            <div class="logo-wrapper">
+              <div class="brand-logo">
+                <span class="logo-text">3D</span>
+                <span class="logo-highlight">PUBG</span>
+                <span class="logo-sub">MODELS</span>
+              </div>
+              <p class="brand-tagline">High-fidelity 3D assets from PUBG Universe</p>
+            </div>
+            
+            <div class="platform-badges">
+              <div class="badge">
+                <i class="fas fa-desktop"></i>
+                <span>PUBG PC</span>
+              </div>
+              <div class="badge">
+                <i class="fas fa-mobile-alt"></i>
+                <span>PUBG Mobile</span>
+              </div>
+              <div class="badge">
+                <i class="fas fa-car"></i>
+                <span>BGMI</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Models Column -->
+          <div class="footer-column">
+            <h4 class="column-title">Models Collection</h4>
+            <div class="column-grid">
+              <div class="category">
+                <h5>Characters & Suits</h5>
+                <a href="#">Mythic X-Suits</a>
+                <a href="#">Legendary Sets</a>
+                <a href="#">Special Outfits</a>
+                <a href="#">Collaborations</a>
+              </div>
+              <div class="category">
+                <h5>Vehicles</h5>
+                <a href="#">Military Vehicles</a>
+                <a href="#">Sports Cars</a>
+                <a href="#">Concept Vehicles</a>
+                <a href="#">Event Vehicles</a>
+              </div>
+              <div class="category">
+                <h5>Weapons & Gear</h5>
+                <a href="#">Legendary Skins</a>
+                <a href="#">AWM Variants</a>
+                <a href="#">Pan Skins</a>
+                <a href="#">Backpacks</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Resources Column -->
+          <div class="footer-column">
+            <h4 class="column-title">Resources</h4>
+            <div class="resources-list">
+              <a href="#"><i class="fas fa-book"></i> Model Documentation</a>
+              <a href="#"><i class="fas fa-video"></i> Tutorial Videos</a>
+              <a href="#"><i class="fas fa-download"></i> Download Guide</a>
+              <a href="#"><i class="fas fa-code"></i> API Reference</a>
+              <a href="#"><i class="fas fa-question-circle"></i> FAQ & Support</a>
+              <a href="#"><i class="fas fa-comments"></i> Community Forum</a>
+            </div>
+            
+            <div class="format-info">
+              <h5>Supported Formats</h5>
+              <div class="formats">
+                <span class="format-tag">.GLB</span>
+                <span class="format-tag">.FBX</span>
+                <span class="format-tag">.OBJ</span>
+                <span class="format-tag">.STL</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Connect Column -->
+          <div class="footer-column">
+            <h4 class="column-title">Connect & Support</h4>
+            <div class="social-platforms">
+              <a href="#" class="social-btn discord">
+                <i class="fab fa-discord"></i>
+                <span>Join Discord</span>
+              </a>
+              <a href="#" class="social-btn sketchfab">
+                <i class="fas fa-cube"></i>
+                <span>Follow on Sketchfab</span>
+              </a>
+              <a href="#" class="social-btn github">
+                <i class="fab fa-github"></i>
+                <span>GitHub Repo</span>
+              </a>
+              <a href="#" class="social-btn patreon">
+                <i class="fab fa-patreon"></i>
+                <span>Support on Patreon</span>
+              </a>
+            </div>
+            
+            <div class="update-subscription">
+              <h5>Get Model Updates</h5>
+              <form class="subscribe-form">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit">
+                  <i class="fas fa-paper-plane"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Middle Section: Legal & Partner Acknowledgments -->
+      <div class="footer-legal">
+        <div class="legal-container">
+          
+          <!-- Horizontal Legal Bar -->
+          <div class="legal-horizontal">
+            
+            <!-- KRAFTON Acknowledgment -->
+            <div class="legal-partner">
+              <div class="partner-label">
+                <i class="fas fa-copyright"></i>
+                <span>Official Property Of</span>
+              </div>
+              <div class="partner-logos">
+                <div class="partner-logo krafton">
+                  <span class="partner-name">KRAFTON</span>
+                  <span class="partner-desc">PUBG Studios</span>
+                </div>
+                <div class="partner-logo tencent">
+                  <span class="partner-name">Tencent Games</span>
+                  <span class="partner-desc">PUBG Mobile</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Platform Acknowledgments -->
+            <div class="platform-acknowledgment">
+              <div class="ack-label">
+                <i class="fas fa-external-link-alt"></i>
+                <span>Hosted On</span>
+              </div>
+              <div class="platform-logos">
+                <div class="platform-logo sketchfab">
+                  <i class="fas fa-cube"></i>
+                  <span>Sketchfab</span>
+                </div>
+                <div class="platform-logo github">
+                  <i class="fab fa-github"></i>
+                  <span>GitHub</span>
+                </div>
+                <div class="platform-logo blender">
+                  <i class="fas fa-cube"></i>
+                  <span>Blender</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Legal Links -->
+            <div class="legal-links-horizontal">
+              <a href="#"><i class="fas fa-balance-scale"></i> Fair Use Policy</a>
+              <a href="#"><i class="fas fa-shield-alt"></i> DMCA Compliance</a>
+              <a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a>
+              <a href="#"><i class="fas fa-user-shield"></i> Privacy Policy</a>
+              <a href="#"><i class="fas fa-gavel"></i> Content Guidelines</a>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Bottom Section: Copyright & Disclaimers -->
+      <div class="footer-bottom">
+        <div class="bottom-container">
+          
+          <!-- Left: Copyright -->
+          <div class="copyright-section">
+            <p class="copyright-text">
+              © 2025 3DPUBG Models Archive. This website is not affiliated with or endorsed by KRAFTON, Inc.
+            </p>
+            <p class="disclaimer">
+              All PUBG®, PLAYERUNKNOWN'S BATTLEGROUNDS, and BATTLEGROUNDS MOBILE INDIA assets, characters, and content are 
+              trademarks and copyrights of KRAFTON, Inc. Models are provided for <strong>educational, fan art, 
+              and non-commercial purposes only</strong>.
+              <strong> Created by <a href="https://www.linkedin.com/in/sanket-jundhare/">Sanket Jundhare</a></strong>
+            </p>
+          </div>
+
+          <!-- Right: Quick Info -->
+          <div class="info-section">
+            <div class="info-badges">
+              <div class="info-badge">
+                <i class="fas fa-exclamation-triangle"></i>
+                <span>Non-Commercial Use</span>
+              </div>
+              <div class="info-badge">
+                <i class="fas fa-graduation-cap"></i>
+                <span>Educational Purpose</span>
+              </div>
+              <div class="info-badge">
+                <i class="fas fa-heart"></i>
+                <span>Fan-Made Project</span>
+              </div>
+            </div>
+            
+            <div class="contact-info">
+              <a href="mailto:sanketjundhare@gmail.com">
+                <i class="fas fa-envelope"></i>
+                sanketjundhare@gmail.com
+              </a>
+              <a href="#" class="report-link">
+                <i class="fas fa-flag"></i>
+                Report Copyright Issue
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </footer>
+    
+  </body>
+</html>

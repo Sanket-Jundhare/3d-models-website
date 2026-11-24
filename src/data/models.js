@@ -1,3 +1,4 @@
+
 export const models = [
   {
     id: 1,
@@ -6,7 +7,7 @@ export const models = [
     type: "Helmet Cosmetic",
     rarity: "Legendary",
     release: "PUBG PC - 2018 Crate Item",
-    file: "../../public/models/blood_raven_lvl3_pubgbgmi_3d_model.glb"
+    file: "/3d-models-website/models/blood_raven_lvl3_pubgbgmi_3d_model.glb"
   },
   {
     id: 2,
@@ -15,7 +16,7 @@ export const models = [
     type: "Character Suit",
     rarity: "Mythic",
     release: "PUBG Mobile - 1st Anniversary",
-    file: "../../public/models/avalanche_x-suit_pubg.glb"
+    file: "/3d-models-website/models/avalanche_x-suit_pubg.glb"
   },
   {
     id: 3,
@@ -24,7 +25,7 @@ export const models = [
     type: "Full Character Set",
     rarity: "Legendary",
     release: "PUBG Mobile - Season C2S2",
-    file: "/models/inferno_fiend_set_pubg_mobile.glb"
+    file: "/3d-models-website/models/inferno_fiend_set_pubg_mobile.glb"
   },
   {
     id: 4,
@@ -33,7 +34,7 @@ export const models = [
     type: "Ultimate Character Suit",
     rarity: "Ultimate (7-Star)",
     release: "PUBG Mobile - UC Gacha System",
-    file: "../../public/models/marmoris_x-suit_7_star.glb"
+    file: "/3d-models-website/models/marmoris_x-suit_7_star.glb"
   },
   {
     id: 5,
@@ -42,7 +43,7 @@ export const models = [
     type: "Animated Character + Weapon",
     rarity: "Legendary",
     release: "PUBG Mobile - Egyptian Empire Event",
-    file: "../../public/models/pubg_pharoah_animated_walk_with_rifle_animation.glb"
+    file: "/3d-models-website/models/pubg_pharoah_animated_walk_with_rifle_animation.glb"
   },
   {
     id: 6,
@@ -51,7 +52,7 @@ export const models = [
     type: "Fantasy Character",
     rarity: "Epic",
     release: "PUBG Mobile - Mystical Woods Event",
-    file: "/models/pubg_forest_elf.glb"
+    file: "/3d-models-website/models/pubg_forest_elf.glb"
   },
   {
     id: 7,
@@ -60,7 +61,7 @@ export const models = [
     type: "Mythical Character Set",
     rarity: "Mythic",
     release: "PUBG Mobile - Curse of Pharaohs Event",
-    file: "../../public/models/2.glb"
+    file: "/3d-models-website/models/2.glb"
   },
   {
     id: 8,
@@ -69,7 +70,7 @@ export const models = [
     type: "Ground Vehicle",
     speed: "90 km/h max",
     capacity: "4 players",
-    file: "../../public/models/cars/bapexpubgbgmi__uaz_vehicle_3d_model.glb"
+    file: "/3d-models-website/models/cars/bapexpubgbgmi__uaz_vehicle_3d_model.glb"
   },
   {
     id: 9,
@@ -78,6 +79,6 @@ export const models = [
     type: "Special Event Vehicle",
     speed: "160 km/h max",
     event: "PUBG Mobile x Bugatti Collaboration",
-    file: "../../public/models/cars/pubg_mobile_blanc_car.glb"
+    file: "/3d-models-website/models/cars/pubg_mobile_blanc_car.glb"
   },
 ];

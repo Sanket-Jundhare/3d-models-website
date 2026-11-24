@@ -1,7 +1,7 @@
 import ModelCard from "./ModelCard";
 import EmptyState from "../ui/EmptyState";
 
-export default function ModelGrid({ models, query = "", onSelect }) {
+export default function ModelGrid({ models, query = "", onSelect, onRemove }) {
   if (!models.length) return <EmptyState searchQuery={query.trim()} />;
 
   return (
@@ -151,6 +151,7 @@ export default function ModelGrid({ models, query = "", onSelect }) {
               key={model.id}
               model={model}
               onClick={() => onSelect(model)}
+              onRemove={onRemove}
             />
           ))}
         </div>

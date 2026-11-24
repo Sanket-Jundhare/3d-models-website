@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import Scene from "../three/Scene";
 import ModelErrorBoundary from "../ui/ModelErrorBoundary";
+import { downloadModel } from "../../utils/modelFiles";
 
 export default function ModelModal({ model, onClose }) {
   useEffect(() => {
@@ -41,10 +42,21 @@ export default function ModelModal({ model, onClose }) {
 
         {/* INFO */}
         <div className="modal-info">
-          <h2>{model.name}</h2>
-          <p>{model.description}</p>
-          {model.category && <span className="tag">{model.category}</span>}
-          {model.rarity && <span className="tag">{model.rarity}</span>}
+          <div className="modal-info-row">
+            <div>
+              <h2>{model.name}</h2>
+              <p>{model.description}</p>
+              {model.category && <span className="tag">{model.category}</span>}
+              {model.rarity && <span className="tag">{model.rarity}</span>}
+            </div>
+            <button
+              className="download-btn"
+              type="button"
+              onClick={() => downloadModel(model)}
+            >
+              Download {model.fileName || "model"}
+            </button>
+          </div>
         </div>
       </div>
     </div>

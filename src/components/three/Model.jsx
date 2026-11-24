@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { useAnimations, useGLTF } from "@react-three/drei";
-import { Box3, Vector3 } from "three";
+import { Box3, Group, Vector3 } from "three";
 import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 
 function contentBounds(root) {
@@ -47,7 +47,6 @@ export default function Model({ file, preview = false }) {
     const maxDim = Math.max(size.x, size.y, size.z) || 1;
 
     cloned.position.sub(center);
-    cloned.scale.setScalar((preview ? 1.7 : 2.1) / maxDim);
     cloned.traverse((child) => {
       if (child.isMesh) {
         child.castShadow = true;
@@ -55,10 +54,13 @@ export default function Model({ file, preview = false }) {
       }
     });
 
-    return cloned;
+    const pivot = new Group();
+    pivot.scale.setScalar((preview ? 1.7 : 2.1) / maxDim);
+    pivot.add(cloned);
+    return pivot;
   }, [scene, preview]);
 
-  const { actions } = useAnimations(animations, clone);
+  const { actions } = useAnimations(animations, clone.children[0] || clone);
 
   useEffect(() => {
     const clips = Object.values(actions).filter(Boolean);

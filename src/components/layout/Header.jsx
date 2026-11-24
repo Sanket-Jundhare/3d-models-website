@@ -1,7 +1,14 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 
-export default function Header({ onSearch }) {
+export default function Header({ onSearch, onUpload, uploadMessage = "" }) {
   const [search, setSearch] = useState("");
+  const fileInputRef = useRef(null);
+
+  const handleFiles = (event) => {
+    const files = event.target.files;
+    if (files?.length) onUpload(files);
+    event.target.value = "";
+  };
 
   const handleSearch = (value) => {
     setSearch(value);
@@ -34,9 +41,18 @@ export default function Header({ onSearch }) {
         </h1>
         
         <div style={{
-          position: 'relative',
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '12px',
           width: '100%',
-          maxWidth: '600px',
+          maxWidth: '760px',
+        }}>
+        <div style={{
+          position: 'relative',
+          flex: '1 1 280px',
+          minWidth: '220px',
         }}>
           <input
             type="search"
@@ -77,6 +93,33 @@ export default function Header({ onSearch }) {
             🔍
           </div>
         </div>
+
+        <button
+          type="button"
+          className="upload-btn"
+          onClick={() => fileInputRef.current?.click()}
+        >
+          Upload model
+        </button>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".glb,.gltf,model/gltf-binary,model/gltf+json"
+          multiple
+          hidden
+          onChange={handleFiles}
+        />
+        </div>
+
+        <p style={{
+          margin: 0,
+          color: 'rgba(255,255,255,0.92)',
+          fontSize: '14px',
+          textAlign: 'center',
+          maxWidth: '640px',
+        }}>
+          {uploadMessage || "Add a .glb or .gltf file. The site shows it in 3D and keeps it in this browser."}
+        </p>
       </div>
     </header>
   );

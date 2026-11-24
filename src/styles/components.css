@@ -58,6 +58,14 @@
   border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.modal-info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
 .modal-info h2 {
   color: white;
   margin: 0 0 8px 0;
@@ -68,6 +76,70 @@
   color: rgba(255, 255, 255, 0.7);
   margin: 0 0 12px 0;
   line-height: 1.5;
+}
+
+.upload-btn,
+.download-btn,
+.remove-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.upload-btn {
+  background: white;
+  color: #5b4bdb;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+}
+
+.upload-btn:hover {
+  transform: translateY(-1px);
+}
+
+.download-btn {
+  background: #3b82f6;
+  color: white;
+}
+
+.download-btn:hover {
+  background: #2563eb;
+}
+
+.remove-btn {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.model-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.model-actions .download-btn,
+.model-actions .remove-btn {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
+.drop-overlay {
+  position: fixed;
+  inset: 16px;
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed white;
+  border-radius: 24px;
+  background: rgba(76, 58, 184, 0.82);
+  color: white;
+  font-size: 28px;
+  font-weight: 800;
+  pointer-events: none;
 }
 
 .tag {

@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import Scene from "../three/Scene";
 import ModelErrorBoundary from "../ui/ModelErrorBoundary";
+import { downloadModel } from "../../utils/modelFiles";
+import { usePreviewSlot } from "../../utils/previewSlots";
 
-export default function ModelCard({ model, onClick }) {
+export default function ModelCard({ model, onClick, onRemove }) {
   const previewRef = useRef(null);
   const [inView, setInView] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -14,11 +16,13 @@ export default function ModelCard({ model, onClick }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => setInView(entry.isIntersecting),
-      { rootMargin: "240px" }
+      { rootMargin: "40px" }
     );
     observer.observe(node);
     return () => observer.disconnect();
   }, []);
+
+  const showPreview = usePreviewSlot(model.id, inView);
 
   const handleLikeClick = (e) => {
     e.stopPropagation();
@@ -53,7 +57,7 @@ export default function ModelCard({ model, onClick }) {
       >
         {/* 3D Model — mounted only while the card is near the viewport */}
         <div ref={previewRef} style={{ width: '100%', height: '100%' }}>
-          {inView ? (
+          {showPreview ? (
             <ModelErrorBoundary key={model.file}>
               <Scene file={model.file} preview />
             </ModelErrorBoundary>
@@ -69,7 +73,7 @@ export default function ModelCard({ model, onClick }) {
                 fontSize: 13,
               }}
             >
-              {model.category || "3D model"}
+              Open to view in 3D
             </div>
           )}
         </div>
@@ -228,6 +232,8 @@ export default function ModelCard({ model, onClick }) {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '8px',
             paddingTop: '12px',
             borderTop: '1px solid #e5e7eb',
           }}
@@ -278,6 +284,31 @@ export default function ModelCard({ model, onClick }) {
               )}
             </div>
           )}
+
+          <div className="model-actions">
+            <button
+              type="button"
+              className="download-btn"
+              onClick={(event) => {
+                event.stopPropagation();
+                downloadModel(model);
+              }}
+            >
+              Download
+            </button>
+            {model.uploaded && (
+              <button
+                type="button"
+                className="remove-btn"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onRemove?.(model);
+                }}
+              >
+                Remove
+              </button>
+            )}
+          </div>
         </div>
       </div>
       

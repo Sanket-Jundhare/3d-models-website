@@ -1,8 +1,8 @@
 import ModelCard from "./ModelCard";
 import EmptyState from "../ui/EmptyState";
 
-export default function ModelGrid({ models, onSelect }) {
-  if (!models.length) return <EmptyState />;
+export default function ModelGrid({ models, query = "", onSelect }) {
+  if (!models.length) return <EmptyState searchQuery={query.trim()} />;
 
   return (
     <>
@@ -44,6 +44,17 @@ export default function ModelGrid({ models, onSelect }) {
           padding: 6px 12px;
           border-radius: 20px;
           font-weight: 500;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          .model-grid-title {
+            color: #f8fafc;
+          }
+
+          .model-grid-count {
+            color: #e2e8f0;
+            background: rgba(255, 255, 255, 0.12);
+          }
         }
         
         .model-grid-empty {
@@ -120,7 +131,7 @@ export default function ModelGrid({ models, onSelect }) {
 
       <div className="model-grid-container">
         <div className="model-grid-header">
-          <h1 className="model-grid-title">3D Models Library Find you FAV once....</h1>
+          <h2 className="model-grid-title">3D Models Library</h2>
           <div 
             className="model-grid-count"
             style={{

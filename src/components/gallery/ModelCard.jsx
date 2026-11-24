@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Scene from "../three/Scene";
+import ModelErrorBoundary from "../ui/ModelErrorBoundary";
 
 export default function ModelCard({ model, onClick }) {
+  const previewRef = useRef(null);
+  const [inView, setInView] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
+
+  useEffect(() => {
+    const node = previewRef.current;
+    if (!node) return undefined;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setInView(entry.isIntersecting),
+      { rootMargin: "240px" }
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
 
   const handleLikeClick = (e) => {
     e.stopPropagation();
@@ -36,9 +51,27 @@ export default function ModelCard({ model, onClick }) {
           background: '#f5f7fa',
         }}
       >
-        {/* 3D Model */}
-        <div style={{ width: '100%', height: '100%' }}>
-          <Scene file={model.file} preview />
+        {/* 3D Model — mounted only while the card is near the viewport */}
+        <div ref={previewRef} style={{ width: '100%', height: '100%' }}>
+          {inView ? (
+            <ModelErrorBoundary key={model.file}>
+              <Scene file={model.file} preview />
+            </ModelErrorBoundary>
+          ) : (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#94a3b8",
+                fontSize: 13,
+              }}
+            >
+              {model.category || "3D model"}
+            </div>
+          )}
         </div>
         
         {/* Hover Overlay */}
@@ -76,23 +109,24 @@ export default function ModelCard({ model, onClick }) {
           </div>
         )}
         
-        {/* Category Badge */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '12px',
-            left: '12px',
-            background: 'rgba(0, 0, 0, 0.8)',
-            color: 'white',
-            padding: '4px 12px',
-            borderRadius: '20px',
-            fontSize: '12px',
-            fontWeight: '600',
-            backdropFilter: 'blur(4px)',
-          }}
-        >
-          {model.category}
-        </div>
+        {model.category && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '12px',
+              left: '12px',
+              background: 'rgba(0, 0, 0, 0.8)',
+              color: 'white',
+              padding: '4px 12px',
+              borderRadius: '20px',
+              fontSize: '12px',
+              fontWeight: '600',
+              backdropFilter: 'blur(4px)',
+            }}
+          >
+            {model.category}
+          </div>
+        )}
         
         {/* Like Button */}
         <button
@@ -144,26 +178,31 @@ export default function ModelCard({ model, onClick }) {
           {model.name}
         </h3>
         
-        {/* Stats Row */}
-        <div 
-          style={{
-            display: 'flex',
-            gap: '16px',
-            marginBottom: '12px',
-            fontSize: '14px',
-            color: '#6b7280',
-          }}
-        >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <span>📥</span>
-            <span>{model.downloads || 4} downloads</span>
+        {(model.downloads != null || model.likes != null) && (
+          <div
+            style={{
+              display: 'flex',
+              gap: '16px',
+              marginBottom: '12px',
+              fontSize: '14px',
+              color: '#6b7280',
+            }}
+          >
+            {model.downloads != null && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span>📥</span>
+                <span>{model.downloads} downloads</span>
+              </div>
+            )}
+            {model.likes != null && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span>❤️</span>
+                <span>{model.likes} likes</span>
+              </div>
+            )}
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <span>❤️</span>
-            <span>{model.likes || 78} likes</span>
-          </div>
-        </div>
-        
+        )}
+
         {/* Description */}
         {model.description && (
           <p
@@ -174,7 +213,7 @@ export default function ModelCard({ model, onClick }) {
               lineHeight: '1.4',
               display: '-webkit-box',
               WebkitLineClamp: '2',
-              WebkitBoxOriental: 'vertical',
+              WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
               minHeight: '40px',
             }}

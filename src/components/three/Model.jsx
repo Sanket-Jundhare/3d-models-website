@@ -1,77 +1,79 @@
-import { useRef, useState, useEffect } from "react";
-import { useGLTF, OrbitControls } from "@react-three/drei";
+import { useEffect, useMemo } from "react";
+import { useAnimations, useGLTF } from "@react-three/drei";
 import { Box3, Vector3 } from "three";
-import { useFrame } from "@react-three/fiber";
+import { clone as cloneSkeleton } from "three/examples/jsm/utils/SkeletonUtils.js";
 
-export default function Model({ file, preview = false }) {
-  const { scene } = useGLTF(file);
-  const groupRef = useRef();
-  const [isHovered, setIsHovered] = useState(false);
-  const [, setScale] = useState(1);
+function contentBounds(root) {
+  root.updateMatrixWorld(true);
 
-  // Auto-rotate effect for preview
-  useFrame(() => {
-    if (preview && groupRef.current && !isHovered) {
-      groupRef.current.rotation.y += 0.005;
-    }
+  const meshes = [];
+  root.traverse((child) => {
+    if (!child.isMesh) return;
+    const box = new Box3().setFromObject(child);
+    const size = box.getSize(new Vector3());
+    const max = Math.max(size.x, size.y, size.z);
+    const min = Math.min(size.x, size.y, size.z);
+    if (max > 0) meshes.push({ child, box, max, min });
   });
 
-  useEffect(() => {
-    if (scene) {
-      const box = new Box3().setFromObject(scene);
-      const size = box.getSize(new Vector3());
-      const center = box.getCenter(new Vector3());
-      
-      scene.position.sub(center);
-      const newScale = preview 
-        ? 1.8 / Math.max(size.x, size.y, size.z)
-        : 1.5 / Math.max(size.x, size.y, size.z);
-      
-      scene.scale.setScalar(newScale);
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setScale(newScale);
-    }
+  if (!meshes.length) return new Box3().setFromObject(root);
+
+  const maxes = meshes.map((mesh) => mesh.max).sort((a, b) => a - b);
+  const median = maxes[Math.floor((maxes.length - 1) / 2)];
+  const kept = meshes.filter((mesh) => {
+    const flatGround = mesh.min < mesh.max * 0.05 && mesh.max > median * 4;
+    return !flatGround;
+  });
+  const visible = kept.length ? kept : meshes;
+
+  for (const mesh of meshes) {
+    mesh.child.visible = visible.includes(mesh);
+  }
+
+  const box = new Box3();
+  box.makeEmpty();
+  for (const mesh of visible) box.union(mesh.box);
+  return box;
+}
+
+export default function Model({ file, preview = false }) {
+  const { scene, animations } = useGLTF(file);
+
+  const clone = useMemo(() => {
+    const cloned = cloneSkeleton(scene);
+    const box = contentBounds(cloned);
+    const size = box.getSize(new Vector3());
+    const center = box.getCenter(new Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z) || 1;
+
+    cloned.position.sub(center);
+    cloned.scale.setScalar((preview ? 1.7 : 2.1) / maxDim);
+    cloned.traverse((child) => {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+      }
+    });
+
+    return cloned;
   }, [scene, preview]);
 
-  return (
-    <>
-      <group 
-        ref={groupRef}
-        onPointerOver={() => setIsHovered(true)}
-        onPointerOut={() => setIsHovered(false)}
-        scale={preview ? [0.9, 0.9, 0.9] : [1, 1, 1]}
-      >
-        <primitive 
-          object={scene} 
-          castShadow 
-          receiveShadow
-        />
-      </group>
+  const { actions } = useAnimations(animations, clone);
 
-      {/* Enhanced lighting */}
-      <ambientLight intensity={preview ? 0.6 : 0.4} />
-      <pointLight 
-        position={[5, 5, 5]} 
-        intensity={preview ? 0.8 : 1}
-        color={preview ? "#ffffff" : "#f5f5f5"}
-      />
-      <pointLight 
-        position={[-5, -5, -5]} 
-        intensity={0.3}
-        color="#3b82f6"
-      />
+  useEffect(() => {
+    const clips = Object.values(actions).filter(Boolean);
+    if (!clips.length) return undefined;
 
-      {/* Controls only for non-preview */}
-      {!preview && (
-        <OrbitControls
-          enableDamping
-          dampingFactor={0.05}
-          minDistance={0.5}
-          maxDistance={10}
-          enableZoom
-          enablePan
-        />
-      )}
-    </>
-  );
+    const walk = clips.find((action) =>
+      /walk|idle|run/i.test(action.getClip()?.name || "")
+    );
+    const clip = walk || clips[0];
+    clip.reset().fadeIn(0.2).play();
+
+    return () => {
+      clip.fadeOut(0.2);
+    };
+  }, [actions]);
+
+  return <primitive object={clone} />;
 }

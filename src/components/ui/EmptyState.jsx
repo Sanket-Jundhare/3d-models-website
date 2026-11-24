@@ -38,7 +38,7 @@ export default function EmptyState({
         color: "#94a3b8",
         fontSize: "14px",
       }}>
-        Try a different search or upload new models
+        Try a different name, category, or rarity
       </p>
     </div>
   );

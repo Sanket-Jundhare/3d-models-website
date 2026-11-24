@@ -45,7 +45,8 @@ export default function Header({ onSearch }) {
             onChange={(e) => handleSearch(e.target.value)}
             style={{
               width: '100%',
-              padding: '16px 24px',
+              boxSizing: 'border-box',
+              padding: '16px 52px 16px 24px',
               borderRadius: '50px',
               border: 'none',
               background: 'rgba(255, 255, 255, 0.9)',
